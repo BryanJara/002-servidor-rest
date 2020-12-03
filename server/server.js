@@ -26,6 +26,6 @@ app.use(require('./routes/usuario'));
     console.log('Base de datos ONLINE');
 });
  
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT , () => {
     console.log('El servidor esta en linea en el puerto ', process.env.PORT);
 });
