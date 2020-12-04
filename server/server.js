@@ -16,12 +16,12 @@ app.get('/', function (req, res) {
 
 app.use(require('./routes/usuario'));
 app.use(require('./routes/categoria'));
-/*app.use(require('./routes/producto'));*/
+app.use(require('./routes/producto'));
 app.use(require('./routes/login'));
 
 
 
-  mongoose.connect('mongodb://localhost:27017/cafeteria', {
+  mongoose.connect('mongodb+srv://admin:12345678Bb@cluster0.aekpz.mongodb.net/cafeteria', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,

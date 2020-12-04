@@ -1,7 +1,12 @@
-/*const mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 let productoSchema = new Schema({
+    nombre:{
+        type: String,
+        unique: true,
+        require: [true, 'El precio es obligatorio']
+    },
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'Usuario'
@@ -11,8 +16,8 @@ let productoSchema = new Schema({
         ref: 'Categoria'
     },
     precioUni: {
-        type: String,
-        default: true
+        type: Number,
+        required: [true, 'El precio es obligatorio']
     },
     disponible: {
         type: Boolean,
@@ -20,4 +25,4 @@ let productoSchema = new Schema({
     }
 });
 
-module.exports = mongoose.model('Producto', productoSchema);*/
+module.exports = mongoose.model('Producto', productoSchema);

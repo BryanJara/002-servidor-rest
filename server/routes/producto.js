@@ -1,4 +1,4 @@
-/*const express = require('express');
+const express = require('express');
 const _ = require('underscore');
 const app = express();
 const Producto = require('../models/producto');
@@ -11,6 +11,7 @@ app.get('/producto', function (req, res) {
     .skip(Number(desde))
     .limit(Number(hasta))
     .populate('usuario', 'nombre email')
+    .populate('categoria', 'nombre')
     .exec((err, productos) => {
         if(err) {
             return res.status(400).json({
@@ -29,16 +30,20 @@ app.get('/producto', function (req, res) {
 });
 
 app.post('/producto', function(req, res){
-    let cat = new Producto({
-        descripcion: req.body.descripcion,
+    let body = req.body;
+    let pro = new Producto({
+        nombre: body.nombre,
+        precioUni: body.precioUni,
+        categoria: body.categoria,
+        disponible: req.body.disponible,
         usuario: req.body.usuario
     });
 
-    cat.save((err, proDB) =>{
+    pro.save((err, proDB) =>{
         if(err) {
             return res.status(400).json({
                 ok: false, 
-                msg: 'Error al insertar una producto',
+                msg: 'Error al insertar un producto',
                 err
             });
         }
@@ -52,9 +57,9 @@ app.post('/producto', function(req, res){
 
 app.put('/producto/:id', function (req, res){
     let id = req.params.id;
-    let body = _.pick(req.body, ['descripcion', 'usuario']);
+    let body = _.pick(req.body, ['nombre', 'precioUni']);
 
-    Categoria.findByIdAndUpdate(id, body, 
+    Producto.findByIdAndUpdate(id, body, 
         {new:true, runValidators:true, context:'query'}, (err, proDB) => {
             if(err){
                 return res.status(400).json({
@@ -65,8 +70,8 @@ app.put('/producto/:id', function (req, res){
             }
             res.json({
                 ok: true,
-                msg: 'El productp fue actualizado con exito',
-                proDB
+                msg: 'El producto fue actualizado con exito',
+                producto: proDB
             });
     });
 });
@@ -74,7 +79,8 @@ app.put('/producto/:id', function (req, res){
 app.delete('/producto/:id', function(req, res){
     let id = req.params.id;
 
-    Producto.findByIdAndRemove(id, { context: 'query' }, (err, proDB) => {
+    Producto.findByIdAndRemove(id, { disponible:false}, 
+        {new:true, runValidators:true, context: 'query' }, (err, proDB) => {
         if(err){
             return res.status(400).json({
                 ok: false,
@@ -89,4 +95,5 @@ app.delete('/producto/:id', function(req, res){
         });
     });
 });
-});*/
+
+module.exports = app;
